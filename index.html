@@ -1,39 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Gerçekçi BSOD Şakası</title>
-  <style>
-    html, body {
-      margin: 0; padding: 0;
-      background: #0000AA;
-      color: white;
-      font-family: Consolas, monospace;
-      font-size: 20px;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: left;
-      cursor: none;
-      overflow: hidden;
-      user-select: none;
+<meta charset="UTF-8" />
+<title>Gerçekçi Korkutucu BSOD Şakası</title>
+<style>
+  @keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+  }
+
+  @keyframes glitch {
+    0% {
+      clip-path: inset(0 0 0 0);
+      transform: translate(0);
+      opacity: 1;
     }
-    .bsod-box {
-      max-width: 900px;
-      line-height: 1.4;
+    20% {
+      clip-path: inset(10% 0 85% 0);
+      transform: translate(-5px, -2px);
+      opacity: 0.8;
     }
-  </style>
+    40% {
+      clip-path: inset(85% 0 10% 0);
+      transform: translate(5px, 2px);
+      opacity: 0.8;
+    }
+    60% {
+      clip-path: inset(10% 0 85% 0);
+      transform: translate(-3px, 0);
+      opacity: 0.9;
+    }
+    80% {
+      clip-path: inset(85% 0 10% 0);
+      transform: translate(3px, 0);
+      opacity: 0.9;
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+      transform: translate(0);
+      opacity: 1;
+    }
+  }
+
+  html, body {
+    margin: 0; padding: 0;
+    background: #0000AA;
+    color: white;
+    font-family: Consolas, monospace;
+    font-size: 20px;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    cursor: none;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .bsod-box {
+    max-width: 900px;
+    line-height: 1.4;
+    animation: shake 0.15s infinite;
+    position: relative;
+  }
+
+  .glitch-layer {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    animation: glitch 1.5s infinite;
+    color: #00FFFF;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    user-select: none;
+    z-index: 2;
+  }
+
+  .parazit-container {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    user-select: none;
+    overflow: hidden;
+    z-index: 5;
+  }
+
+  .parazit {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: parazitAnim 3s linear infinite;
+  }
+
+  @keyframes parazitAnim {
+    0% { opacity: 0.1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 0.1; }
+  }
+
+  .loading-bar-container {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 10px;
+    background: #0044CC;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px #0000AA;
+  }
+
+  .loading-bar {
+    height: 100%;
+    background: #00FFFF;
+    width: 0%;
+    animation: loadingAnim 10s linear forwards;
+  }
+
+  @keyframes loadingAnim {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+</style>
 </head>
 <body>
-  <audio id="bsod-audio" loop volume="1.0">
-    <source src="https://www.myinstants.com/media/sounds/windows-error.mp3" type="audio/mpeg" />
-  </audio>
-  <audio id="bsod-error-loop" loop volume="1.0">
-    <source src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3" type="audio/mpeg" />
-  </audio>
+  <audio id="bsod-audio" loop></audio>
+  <audio id="bsod-error-loop" loop></audio>
 
-  <div class="bsod-box">
+  <div class="bsod-box" id="bsod-main">
     <p>A problem has been detected and Windows has been shut down to prevent damage<br>to your computer.</p>
     <br>
     <p>DRIVER_IRQL_NOT_LESS_OR_EQUAL</p>
@@ -55,34 +160,132 @@
     <p>Initializing disk for crash dump ...</p>
     <p>Beginning dump of physical memory.</p>
     <p>Dumping physical memory to disk: 100</p>
+
+    <div class="glitch-layer" aria-hidden="true">
+      <p>A problem has been detected and Windows has been shut down to prevent damage<br>to your computer.</p>
+      <br>
+      <p>DRIVER_IRQL_NOT_LESS_OR_EQUAL</p>
+      <br>
+      <p>If this is the first time you've seen this Stop error screen,<br>restart your computer. If this screen appears again, follow<br>these steps:</p>
+      <ul>
+        <li>Check to make sure any new hardware or software is properly installed.</li>
+        <li>If this is a new installation, ask your hardware or software manufacturer for any Windows updates you might need.</li>
+      </ul>
+      <p>If problems continue, disable or remove any newly installed hardware<br>or software. Disable BIOS memory options such as caching or shadowing.</p>
+      <p>If you need to use Safe Mode to remove or disable components, restart<br>your computer, press F8 to select Advanced Startup Options, and then<br>select Safe Mode.</p>
+      <br>
+      <p>Technical Information:</p>
+      <p>*** STOP: 0x000000D1 (0x00000000, 0x00000002, 0x00000000, 0xF86B5A89)</p>
+      <br>
+      <p>*** ADDRESS F86B5A89 base at F86B5000, DateStamp 3dd991eb - ndis.sys</p>
+      <br>
+      <p>Collecting data for crash dump ...</p>
+      <p>Initializing disk for crash dump ...</p>
+      <p>Beginning dump of physical memory.</p>
+      <p>Dumping physical memory to disk: 100</p>
+    </div>
   </div>
 
-  <script>
-    const audio = document.getElementById('bsod-audio');
-    const loopAudio = document.getElementById('bsod-error-loop');
+  <div class="parazit-container" id="parazit-container"></div>
 
-    async function tryAutoFullscreen() {
-      try {
-        await document.documentElement.requestFullscreen();
-      } catch (e) {
-        // Otomatik tam ekran engellendi, sessizce geç
+  <div class="loading-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="loading-bar" id="loading-bar"></div>
+  </div>
+
+<script>
+  const audio1 = document.getElementById('bsod-audio');
+  const audio2 = document.getElementById('bsod-error-loop');
+  audio1.src = "https://www.myinstants.com/media/sounds/windows-error.mp3";
+  audio2.src = "https://freesound.org/data/previews/331/331912_3248244-lq.mp3";
+
+  audio1.volume = 1.0;
+  audio2.volume = 0.8;
+
+  async function tryFullscreen() {
+    try {
+      await document.documentElement.requestFullscreen();
+    } catch {}
+  }
+
+  function playSounds() {
+    audio1.loop = true;
+    audio2.loop = true;
+    audio1.play();
+    audio2.play();
+  }
+
+  function createParazit() {
+    const parazit = document.createElement('div');
+    parazit.classList.add('parazit');
+    parazit.style.width = parazit.style.height = Math.random() * 3 + 1 + 'px';
+    parazit.style.top = Math.random() * window.innerHeight + 'px';
+    parizat.style.left = Math.random() * window.innerWidth + 'px';
+    parazit.style.animationDuration = (Math.random() * 2 + 1) + 's';
+    document.getElementById('parazit-container').appendChild(parazit);
+
+    setTimeout(() => {
+      parazit.remove();
+    }, 3000);
+  }
+
+  function startParazitLoop() {
+    setInterval(createParazit, 100);
+  }
+
+  // Rastgele kısa ses patlamaları için
+  function randomStaticSound() {
+    const staticSound = new Audio("https://freesound.org/data/previews/198/198841_285997-lq.mp3");
+    staticSound.volume = 1.0;
+    staticSound.play();
+  }
+
+  function startRandomStaticLoop() {
+    setInterval(() => {
+      if (Math.random() < 0.15) { // %15 ihtimalle
+        randomStaticSound();
       }
-      playSounds();
-    }
+    }, 1200);
+  }
 
-    function playSounds() {
-      audio.volume = 1.0;    // maksimum ses
-      loopAudio.volume = 0.7; // biraz daha düşük ama yüksek
-      audio.play();
-      loopAudio.play();
-    }
+  // Ekran titretme için
+  function startScreenShake() {
+    const bsodBox = document.getElementById('bsod-main');
+    setInterval(() => {
+      bsodBox.style.transform = `translate(${(Math.random() - 0.5) * 10}px, ${(Math.random() - 0.5) * 10}px)`;
+    }, 100);
+  }
 
-    window.onload = tryAutoFullscreen;
+  // Yükleme barı animasyonunu kontrol et
+  function startLoadingBar() {
+    const bar = document.getElementById('loading-bar');
+    let width = 0;
+    const interval = setInterval(() => {
+      width += 1;
+      bar.style.width = width + '%';
+      bar.setAttribute('aria-valuenow', width);
+      if (width >= 100) clearInterval(interval);
+    }, 100);
+  }
 
-    // Fare ve klavyeyi gizle/engelle
-    document.body.style.cursor = 'none';
-    document.body.onkeydown = e => e.preventDefault();
-    document.body.onmousedown = e => e.preventDefault();
-  </script>
+  // Fare ve klavyeyi engelle
+  document.body.style.cursor = 'none';
+  document.body.onkeydown = e => e.preventDefault();
+  document.body.onmousedown = e => e.preventDefault();
+
+  // Sayfadan çıkış uyarısı
+  window.onbeforeunload = function() {
+    return "Bu sayfadan çıkmak istediğinize emin misiniz? Bilgisayarınızda hata oluştu!";
+  };
+
+  // Başlat
+  window.onload = () => {
+    tryFullscreen();
+    playSounds();
+    startParazitLoop();
+    startRandomStaticLoop();
+    startScreenShake();
+    startLoadingBar();
+  };
+</script>
 </body>
 </html>
