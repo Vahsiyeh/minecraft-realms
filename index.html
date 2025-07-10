@@ -1,291 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Minecraft Realms Invite Clone (Troll)</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
-
-  /* Reset & Base */
-  * {
-    box-sizing: border-box;
-    margin: 0; padding: 0;
-  }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #0b0b0b;
-    color: #eee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  /* Container */
-  .container {
-    background: #121212;
-    width: 390px;
-    border-radius: 12px;
-    box-shadow:
-      0 0 10px #00ffb8,
-      inset 0 0 10px #00ffb8;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Header */
-  .header {
-    background: linear-gradient(90deg, #00ffb8, #00d8a0);
-    padding: 14px 16px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    color: #000;
-    user-select: none;
-    border-bottom: 2px solid #00ffb8;
-  }
-
-  /* Content */
-  .content {
-    padding: 24px 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .invite-text {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #00ffb8;
-    text-align: center;
-  }
-
-  .description {
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-    color: #ccc;
-    text-align: center;
-    line-height: 1.4;
-  }
-
-  /* Buttons */
-  .btn {
-    display: block;
-    background: #00ffb8;
-    color: #000;
-    font-weight: 600;
-    padding: 14px 0;
-    border-radius: 8px;
-    border: none;
-    width: 100%;
-    font-size: 1rem;
-    cursor: pointer;
-    box-shadow:
-      0 0 8px #00ffb8,
-      inset 0 -4px 10px #00c995;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
-  }
-  .btn:hover {
-    background: #00c995;
-    box-shadow:
-      0 0 12px #00ffb8,
-      inset 0 -4px 12px #00e6b0;
-  }
-
-  /* Link text below button */
-  .link-text {
-    margin-top: 12px;
-    font-size: 0.85rem;
-    text-align: center;
-    color: #888;
-    user-select: none;
-  }
-  .link-text a {
-    color: #00ffb8;
-    text-decoration: none;
-  }
-  .link-text a:hover {
-    text-decoration: underline;
-  }
-
-  /* Footer text */
-  .footer {
-    font-size: 0.7rem;
-    text-align: center;
-    color: #555;
-    padding: 14px 10px;
-    user-select: none;
-  }
-
-  /* ----- KORKUNÇ MOD STİL ----- */
-
-  .scare-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: #000;
-    color: #ff0000;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: 900;
-    font-size: 2.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    z-index: 9999;
-    flex-direction: column;
-    user-select: none;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.8s ease-in-out;
-  }
-
-  .scare-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-    animation: flicker 0.15s infinite;
-  }
-
-  @keyframes flicker {
-    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-      opacity: 1;
+  <meta charset="UTF-8" />
+  <title>Gerçekçi BSOD Şakası</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      background: #0000AA;
+      color: white;
+      font-family: Consolas, monospace;
+      font-size: 20px;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+      cursor: default;
+      overflow: hidden;
+      user-select: none;
     }
-    20%, 22%, 24%, 55% {
-      opacity: 0.4;
+    .bsod-box {
+      max-width: 900px;
+      line-height: 1.4;
     }
-  }
-
-  /* Glitch effect text */
-  .glitch {
-    position: relative;
-    color: #ff0000;
-    animation: glitchAnim 1s infinite;
-  }
-  .glitch::before,
-  .glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    color: #ff0000;
-    background: black;
-    overflow: hidden;
-    clip: rect(0, 900px, 0, 0);
-  }
-  .glitch::before {
-    left: 2px;
-    text-shadow: -2px 0 cyan;
-    animation: glitchAnimBefore 1s infinite;
-  }
-  .glitch::after {
-    left: -2px;
-    text-shadow: -2px 0 magenta;
-    animation: glitchAnimAfter 1s infinite;
-  }
-  @keyframes glitchAnim {
-    0% {
-      clip: rect(0, 9999px, 0, 0);
+    #fullscreen-msg {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      z-index: 9999;
+      cursor: pointer;
     }
-    20% {
-      clip: rect(5px, 9999px, 50px, 0);
-    }
-    40% {
-      clip: rect(15px, 9999px, 70px, 0);
-    }
-    60% {
-      clip: rect(25px, 9999px, 90px, 0);
-    }
-    80% {
-      clip: rect(5px, 9999px, 50px, 0);
-    }
-    100% {
-      clip: rect(0, 9999px, 0, 0);
-    }
-  }
-  @keyframes glitchAnimBefore {
-    0% {
-      clip: rect(10px, 9999px, 55px, 0);
-      transform: translate(-2px, -2px);
-    }
-    50% {
-      clip: rect(15px, 9999px, 60px, 0);
-      transform: translate(2px, 2px);
-    }
-    100% {
-      clip: rect(10px, 9999px, 55px, 0);
-      transform: translate(-2px, -2px);
-    }
-  }
-  @keyframes glitchAnimAfter {
-    0% {
-      clip: rect(0, 9999px, 35px, 0);
-      transform: translate(2px, 2px);
-    }
-    50% {
-      clip: rect(5px, 9999px, 40px, 0);
-      transform: translate(-2px, -2px);
-    }
-    100% {
-      clip: rect(0, 9999px, 35px, 0);
-      transform: translate(2px, 2px);
-    }
-  }
-
-  /* Red flashing background */
-  @keyframes flashBg {
-    0%, 100% { background-color: #000; }
-    50% { background-color: #ff0000; }
-  }
-</style>
+  </style>
 </head>
 <body>
-  <div class="container" role="main" aria-label="Minecraft Realms Invite">
-    <header class="header">Minecraft Realms</header>
-    <section class="content" id="mainContent">
-      <div class="invite-text">Join Realm: <strong>q4wbSzXHu5xitrc</strong></div>
-      <div class="description">Your friends invited you to play together on Minecraft Realms. Click the button below to join the realm on your Pocket Edition or Bedrock.</div>
-      <button class="btn" onclick="alert('This is a demo button!')">Open in Minecraft</button>
-      <div class="link-text">Or <a href="#">Copy Invite Link</a></div>
-    </section>
-    <footer class="footer">© 2025 Mojang Studios. All rights reserved.</footer>
+  <audio id="bsod-audio" loop>
+    <source src="https://www.myinstants.com/media/sounds/windows-error.mp3" type="audio/mpeg" />
+  </audio>
+  <audio id="bsod-error-loop" loop>
+    <source src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3" type="audio/mpeg" />
+  </audio>
+
+  <div class="bsod-box">
+    <p>A problem has been detected and Windows has been shut down to prevent damage<br>to your computer.</p>
+    <br>
+    <p>DRIVER_IRQL_NOT_LESS_OR_EQUAL</p>
+    <br>
+    <p>If this is the first time you've seen this Stop error screen,<br>restart your computer. If this screen appears again, follow<br>these steps:</p>
+    <ul>
+      <li>Check to make sure any new hardware or software is properly installed.</li>
+      <li>If this is a new installation, ask your hardware or software manufacturer for any Windows updates you might need.</li>
+    </ul>
+    <p>If problems continue, disable or remove any newly installed hardware<br>or software. Disable BIOS memory options such as caching or shadowing.</p>
+    <p>If you need to use Safe Mode to remove or disable components, restart<br>your computer, press F8 to select Advanced Startup Options, and then<br>select Safe Mode.</p>
+    <br>
+    <p>Technical Information:</p>
+    <p>*** STOP: 0x000000D1 (0x00000000, 0x00000002, 0x00000000, 0xF86B5A89)</p>
+    <br>
+    <p>*** ADDRESS F86B5A89 base at F86B5000, DateStamp 3dd991eb - ndis.sys</p>
+    <br>
+    <p>Collecting data for crash dump ...</p>
+    <p>Initializing disk for crash dump ...</p>
+    <p>Beginning dump of physical memory.</p>
+    <p>Dumping physical memory to disk: 100</p>
   </div>
 
-  <div class="scare-overlay" id="scareOverlay" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="glitch" data-text="!!! VIRUS DETECTED !!!">!!! VIRUS DETECTED !!!</div>
-    <p>System corruption in progress...</p>
-    <p>WARNING! YOUR DEVICE IS INFECTED!</p>
-    <p>Disconnect immediately!</p>
+  <div id="fullscreen-msg" onclick="goFullscreenAndPlay()">
+    Lütfen tam ekran için tıklayın.<br><br>Gerçekçi mavi ekran sesi ile şaka başlayacak!
   </div>
 
-<script>
-  // 4 saniye sonra korkunç modu aktif et
-  setTimeout(() => {
-    // Gizli içeriği kapat
-    document.querySelector('.container').style.filter = 'blur(6px)';
-    document.querySelector('.container').style.pointerEvents = 'none';
+  <script>
+    const audio = document.getElementById('bsod-audio');
+    const loopAudio = document.getElementById('bsod-error-loop');
+    const fullscreenMsg = document.getElementById('fullscreen-msg');
 
-    // Korkunç overlay aç
-    const overlay = document.getElementById('scareOverlay');
-    overlay.classList.add('active');
-
-    // Ses efekti
-    const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
-    audio.play();
-
-    // Titreşim (mobil için)
-    if (navigator.vibrate) {
-      navigator.vibrate([200, 100, 200]);
+    async function tryAutoFullscreen() {
+      try {
+        await document.documentElement.requestFullscreen();
+        playSounds();
+      } catch (e) {
+        // Otomatik tam ekran izin verilmedi
+        fullscreenMsg.style.display = 'flex';
+      }
     }
-  }, 4000);
-</script>
+
+    function playSounds() {
+      audio.play();
+      loopAudio.play();
+    }
+
+    function goFullscreenAndPlay() {
+      document.documentElement.requestFullscreen().then(() => {
+        fullscreenMsg.style.display = 'none';
+        playSounds();
+      }).catch(() => {
+        alert('Tam ekran moduna geçilemedi!');
+      });
+    }
+
+    window.onload = tryAutoFullscreen;
+
+    // Fare ve klavye gizle / engelle (isteğe bağlı)
+    document.body.style.cursor = 'none';
+    document.body.onkeydown = e => e.preventDefault();
+    document.body.onmousedown = e => e.preventDefault();
+  </script>
 </body>
 </html>
